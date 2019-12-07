@@ -79,14 +79,12 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     
     private func setupButtons() {
         v.flashButton.setImage(YPConfig.icons.flashOffIcon, for: .normal)
-        v.flipButton.setImage(YPConfig.icons.loopIcon, for: .normal)
         v.shotButton.setImage(YPConfig.icons.captureVideoImage, for: .normal)
     }
     
     private func linkButtons() {
         v.flashButton.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
         v.shotButton.addTarget(self, action: #selector(shotButtonTapped), for: .touchUpInside)
-        v.flipButton.addTarget(self, action: #selector(flipButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - Flip Camera
@@ -202,7 +200,6 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         v.flashButton.isHidden = state.flashMode == .noFlash
         v.shotButton.setImage(state.isRecording ? YPConfig.icons.captureVideoOnImage : YPConfig.icons.captureVideoImage,
                               for: .normal)
-        v.flipButton.isEnabled = !state.isRecording
         v.progressBar.progress = state.progress
         v.timeElapsedLabel.text = YPHelper.formattedStrigFrom(state.timeElapsed)
         
