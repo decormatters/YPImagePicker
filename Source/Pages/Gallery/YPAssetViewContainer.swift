@@ -28,9 +28,6 @@ class YPAssetViewContainer: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        addSubview(grid)
-        grid.frame = frame
         clipsToBounds = true
         
         for sv in subviews {
