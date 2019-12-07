@@ -180,4 +180,7 @@ public class YPCameraVC: UIViewController, UIGestureRecognizerDelegate, YPPermis
         v.flashButton.setImage(flashImage, for: .normal)
         v.flashButton.isHidden = !photoCapture.hasFlash
     }
+    func toggleGrid() {
+        v.grid.isHidden = !v.grid.isHidden
+    }
 }

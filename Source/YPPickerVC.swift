@@ -264,10 +264,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     
     func updateUI() {
         // Update Nav Bar state.
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.cancel,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(close))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: imageFromBundle("cancel"), style: .plain, target: self, action: #selector(close))
         navigationItem.leftBarButtonItem?.tintColor = YPConfig.colors.tintColor
 
         switch mode {
@@ -285,7 +282,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         case .camera:
             navigationItem.titleView = nil
             title = cameraVC?.title
-            navigationItem.rightBarButtonItem = nil
+            navigationItem.rightBarButtonItem =  UIBarButtonItem(image: imageFromBundle("grid"), style: .plain, target: self, action: #selector(grid))
         case .video:
             navigationItem.titleView = nil
             title = videoVC?.title
@@ -300,6 +297,13 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
             libraryVC.mediaManager.forseCancelExporting()
         }
         self.didClose?()
+    }
+
+    @objc
+    func grid() {
+        if let cameraVC = cameraVC {
+            cameraVC.toggleGrid()
+        }
     }
     
     // When pressing "Next"

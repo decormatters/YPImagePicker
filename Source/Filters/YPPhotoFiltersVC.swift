@@ -80,10 +80,8 @@ open class YPPhotoFiltersVC: UIViewController, IsMediaFilterVC, UIGestureRecogni
         // Setup of Navigation Bar
         title = YPConfig.wordings.filter
         if isFromSelectionVC {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.cancel,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(cancel))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: imageFromBundle("cancel"), style: .plain, target: self, action: #selector(cancel))
+            
             navigationItem.leftBarButtonItem?.tintColor = YPConfig.colors.tintColor
         }
         setupRightBarButton()
