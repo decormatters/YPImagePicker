@@ -46,7 +46,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = YPConfig.colors.safeAreaBackgroundColor
+        view.backgroundColor = UIColor(r: 247, g: 247, b: 247)
         
         delegate = self
         
@@ -200,7 +200,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         vc.didSelectAlbum = { [weak self] album in
             self?.libraryVC?.setAlbum(album)
             self?.setTitleViewWithTitle(aTitle: album.title)
-            navVC.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true, completion: nil)
         }
         present(navVC, animated: true, completion: nil)
     }
@@ -268,8 +268,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
                                                            style: .plain,
                                                            target: self,
                                                            action: #selector(close))
-        navigationItem.leftBarButtonItem?.tintColor = YPConfig.colors.tintColor
-
+        
         switch mode {
         case .library:
             setTitleViewWithTitle(aTitle: libraryVC?.title ?? "")
