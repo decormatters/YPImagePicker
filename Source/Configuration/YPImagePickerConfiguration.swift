@@ -28,6 +28,9 @@ public struct YPImagePickerConfiguration {
     // Video configuration
     public var video = YPConfigVideo()
     
+    // Gallery configuration
+    public var gallery = YPConfigSelectionsGallery()
+    
     /// Use this property to modify the default wordings provided.
     public var wordings = YPWordings()
     
@@ -83,13 +86,9 @@ public struct YPImagePickerConfiguration {
 
     /// Defines the preferredStatusBarAppearance
     public var preferredStatusBarStyle = UIStatusBarStyle.default
+    public var maxCameraZoomFactor: CGFloat = 1.0
     
-    /// Defines the text colour to be shown when a bottom option is selected
-    public var bottomMenuItemSelectedColour = UIColor(r: 38, g: 38, b: 38)
-    
-    /// Defines the text colour to be shown when a bottom option is unselected
-    public var bottomMenuItemUnSelectedColour = UIColor(r: 153, g: 153, b: 153)
-    
+
     /// List of default filters which will be added on the filter screen
     public var filters: [YPFilter] = [
         YPFilter(name: "Normal", applier: nil),
@@ -221,6 +220,12 @@ public struct YPConfigVideo {
     /// The minimum duration allowed for the trimming.
     /// The handles won't pan further if the minimum duration is attained.
     public var trimmerMinDuration: Double = 3.0
+}
+
+/// Encapsulates gallery specific settings.
+public struct YPConfigSelectionsGallery {
+    /// Defines if the remove button should be hidden when showing the gallery. Default is true.
+    public var hidesRemoveButton = true
 }
 
 public enum YPlibraryMediaType {

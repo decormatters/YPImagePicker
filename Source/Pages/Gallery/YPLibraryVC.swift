@@ -322,18 +322,24 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
             self.updateCropInfo()
         }
         
+        let updateCropInfo = {
+            self.updateCropInfo()
+        }
+        //MARK: add a func(updateCropInfo) after crop multiple
         DispatchQueue.global(qos: .userInitiated).async {
             switch asset.mediaType {
             case .image:
                 self.v.assetZoomableView.setImage(asset,
                                                   mediaManager: self.mediaManager,
                                                   storedCropPosition: self.fetchStoredCrop(),
-                                                  completion: completion)
+                                                  completion: completion,
+                                                  updateCropInfo: updateCropInfo)
             case .video:
                 self.v.assetZoomableView.setVideo(asset,
                                                   mediaManager: self.mediaManager,
                                                   storedCropPosition: self.fetchStoredCrop(),
-                                                  completion: completion)
+                                                  completion: completion,
+                                                  updateCropInfo: updateCropInfo)
             case .audio, .unknown:
                 ()
             @unknown default:
@@ -349,8 +355,8 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
             return true
         }
         
-        let tooLong = asset.duration > YPConfig.video.libraryTimeLimit
-        let tooShort = asset.duration < YPConfig.video.minimumTimeLimit
+        let tooLong = floor(asset.duration) > YPConfig.video.libraryTimeLimit
+        let tooShort = floor(asset.duration) < YPConfig.video.minimumTimeLimit
         
         if tooLong || tooShort {
             DispatchQueue.main.async {
@@ -507,6 +513,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
                 @unknown default:
                     fatalError()
                 }
+                return
             }
         }
     }

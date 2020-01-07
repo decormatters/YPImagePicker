@@ -10,6 +10,8 @@ import UIKit
 
 public class YPSelectionsGalleryVC: UIViewController {
     
+    override public var prefersStatusBarHidden: Bool { return YPConfig.hidesStatusBar }
+    
     public var items: [YPMediaItem] = []
     public var didFinishHandler: ((_ gallery: YPSelectionsGalleryVC, _ items: [YPMediaItem]) -> Void)?
     private var lastContentOffsetX: CGFloat = 0
@@ -60,6 +62,17 @@ public class YPSelectionsGalleryVC: UIViewController {
         }
         didFinishHandler?(self, items)
     }
+    
+    @objc
+    private func removeButtonDidClick(sender: UIButton) {
+        guard let cell = sender.superview as? UICollectionViewCell, let indexPath = v.collectionView.indexPath(for: cell) else {
+            return
+        }
+        items.remove(at: indexPath.row)
+        v.collectionView.performBatchUpdates({
+            v.collectionView.deleteItems(at: [indexPath])
+        }, completion: { _ in })
+    }
 }
 
 // MARK: - Collection View
@@ -83,6 +96,11 @@ extension YPSelectionsGalleryVC: UICollectionViewDataSource {
             cell.imageView.image = video.thumbnail
             cell.setEditable(YPConfig.showsVideoTrimmer)
         }
+        
+        if !YPConfig.gallery.hidesRemoveButton {
+            cell.addRemoveButton(target: self, action: #selector(removeButtonDidClick(sender:)))
+        }
+        
         return cell
     }
 }
