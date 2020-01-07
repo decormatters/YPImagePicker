@@ -86,6 +86,7 @@ public struct YPImagePickerConfiguration {
 
     /// Defines the preferredStatusBarAppearance
     public var preferredStatusBarStyle = UIStatusBarStyle.default
+    public var maxCameraZoomFactor: CGFloat = 1.0
     
 
     /// List of default filters which will be added on the filter screen
