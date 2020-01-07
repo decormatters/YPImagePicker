@@ -59,7 +59,7 @@ public class YPSelectionsGalleryCell: UICollectionViewCell {
         let removeButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: image.size))
         removeButton.setBackgroundImage(image, for: UIControl.State())
         sv(removeButton)
-        removeButton.top(12).trailing(12)
+        removeButton.top(12).right(12)
         removeButton.addTarget(target, action: action, for: .touchUpInside)
     }
     
