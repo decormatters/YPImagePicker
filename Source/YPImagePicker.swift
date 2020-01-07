@@ -15,6 +15,10 @@ public protocol YPImagePickerDelegate: AnyObject {
 }
 
 open class YPImagePicker: UINavigationController {
+      
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
     
     private var _didFinishPicking: (([YPMediaItem], Bool) -> Void)?
     public func didFinishPicking(completion: @escaping (_ items: [YPMediaItem], _ cancelled: Bool) -> Void) {
@@ -143,7 +147,7 @@ override open func viewDidLoad() {
         
         // If user has not customized the Nav Bar tintColor, then use black.
         if UINavigationBar.appearance().tintColor == nil {
-            UINavigationBar.appearance().tintColor  = .black
+            UINavigationBar.appearance().tintColor = .ypLabel
         }
     }
     
