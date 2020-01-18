@@ -27,6 +27,7 @@ open class YPPhotoFiltersVC: UIViewController, IsMediaFilterVC, UIGestureRecogni
 
     public var didSave: ((YPMediaItem) -> Void)?
     public var didCancel: (() -> Void)?
+    public var didFilter: ((String) -> Void)?
 
 
     fileprivate let filters: [YPFilter] = YPConfig.filters
@@ -187,6 +188,9 @@ extension YPPhotoFiltersVC: UICollectionViewDataSource {
 extension YPPhotoFiltersVC: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedFilter = filters[indexPath.row]
+        if let didFilter = didFilter, let filterName = selectedFilter?.name {
+            didFilter(filterName)
+        }
         currentlySelectedImageThumbnail = filteredThumbnailImagesArray[indexPath.row]
         self.v.imageView.image = currentlySelectedImageThumbnail
     }

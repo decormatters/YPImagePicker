@@ -12,6 +12,7 @@ import Photos
 
 protocol ImagePickerDelegate: AnyObject {
     func noPhotos()
+    func toPicker(string: String, attribute: [String: Any]?)
 }
 
 open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
@@ -28,6 +29,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     /// Private callbacks to YPImagePicker
     public var didClose:(() -> Void)?
     public var didSelectItems: (([YPMediaItem]) -> Void)?
+    public var DMlog: ((String, [String: Any]?) -> Void)?
     
     enum Mode {
         case library
@@ -65,6 +67,7 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         if YPConfig.screens.contains(.photo) {
             cameraVC = YPCameraVC()
             cameraVC?.didCapturePhoto = { [weak self] img in
+                self?.analyticLog(str: "Camera_RedCircleBtn_Tapped")
                 self?.didSelectItems?([YPMediaItem.photo(p: YPMediaPhoto(image: img,
                                                                         fromCamera: true))])
             }
@@ -154,6 +157,11 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     }
     
     func pagerDidSelectController(_ vc: UIViewController) {
+        if vc is YPLibraryVC {
+            analyticLog(str: "Camera_LibraryBtn_Tapped")
+        } else if vc is YPCameraVC{
+            analyticLog(str: "Camera_CameraBtn_Tapped")
+        }
         updateMode(with: vc)
     }
     
@@ -302,9 +310,15 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     @objc
     func grid() {
         if let cameraVC = cameraVC {
+            analyticLog(str: "Camera_GridBtn_Tapped")
             cameraVC.toggleGrid()
         }
     }
+
+
+    func analyticLog(str: String, attrib: [String: Any]? = nil) {
+        imagePickerDelegate?.toPicker(string: str, attribute: attrib)
+       }
     
     // When pressing "Next"
     @objc

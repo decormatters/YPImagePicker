@@ -24,6 +24,9 @@ open class YPImagePicker: UINavigationController {
     public func didFinishPicking(completion: @escaping (_ items: [YPMediaItem], _ cancelled: Bool) -> Void) {
         _didFinishPicking = completion
     }
+
+    public var dmLog: ((String, [String: Any]?) -> Void)?
+
     public weak var imagePickerDelegate: YPImagePickerDelegate?
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -127,6 +130,10 @@ override open func viewDidLoad() {
                             showCropVC(photo: outputPhoto, completion: completion)
                         }
                     }
+                    filterVC.didFilter = { [weak self] name in
+                        self?.picker.analyticLog(str: "Camera_StyleBtn_Tapped", attrib: ["name": name])
+                    }
+
                     self?.pushViewController(filterVC, animated: false)
                 } else {
                     showCropVC(photo: photo, completion: completion)
@@ -165,6 +172,10 @@ override open func viewDidLoad() {
 }
 
 extension YPImagePicker: ImagePickerDelegate {
+    func toPicker(string: String, attribute: [String : Any]?) {
+        dmLog?(string, attribute)
+    }
+
     func noPhotos() {
         self.imagePickerDelegate?.noPhotos()
     }
