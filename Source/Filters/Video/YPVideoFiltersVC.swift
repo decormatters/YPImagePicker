@@ -77,7 +77,11 @@ public class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
         // Navigation bar setup
         title = YPConfig.wordings.trim
         if isFromSelectionVC {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: imageFromBundle("cancel"), style: .plain, target: self, action: #selector(cancel))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.cancel,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(cancel))
+            navigationItem.leftBarButtonItem?.setFont(font: YPConfig.fonts.leftBarButtonFont, forState: .normal)
             navigationItem.leftBarButtonItem?.tintColor = YPConfig.colors.tintColor
         }
         setupRightBarButtonItem()
@@ -109,6 +113,7 @@ public class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
                                                             target: self,
                                                             action: #selector(save))
         navigationItem.rightBarButtonItem?.tintColor = YPConfig.colors.tintColor
+        navigationItem.rightBarButtonItem?.setFont(font: YPConfig.fonts.rightBarButtonFont, forState: .normal)
     }
     
     // MARK: - Top buttons
@@ -128,14 +133,24 @@ public class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
             let destinationURL = URL(fileURLWithPath: NSTemporaryDirectory())
                 .appendingUniquePathComponent(pathExtension: YPConfig.video.fileType.fileExtension)
             
-            try trimmedAsset.export(to: destinationURL) { [weak self] in
-                guard let strongSelf = self else { return }
-                
-                DispatchQueue.main.async {
-                    let resultVideo = YPMediaVideo(thumbnail: strongSelf.coverImageView.image!,
-                                                   videoURL: destinationURL, asset: strongSelf.inputVideo.asset)
-                    didSave(YPMediaItem.video(v: resultVideo))
-                    strongSelf.setupRightBarButtonItem()
+            _ = trimmedAsset.export(to: destinationURL) { [weak self] session in
+                switch session.status {
+                case .completed:
+                    DispatchQueue.main.async {
+                        if let coverImage = self?.coverImageView.image {
+                            let resultVideo = YPMediaVideo(thumbnail: coverImage,
+														   videoURL: destinationURL,
+														   asset: self?.inputVideo.asset)
+                            didSave(YPMediaItem.video(v: resultVideo))
+                            self?.setupRightBarButtonItem()
+                        } else {
+                            print("YPVideoFiltersVC -> Don't have coverImage.")
+                        }
+                    }
+                case .failed:
+                    print("YPVideoFiltersVC Export of the video failed. Reason: \(String(describing: session.error))")
+                default:
+                    print("YPVideoFiltersVC Export session completed with \(session.status) status. Not handled")
                 }
             }
         } catch let error {
