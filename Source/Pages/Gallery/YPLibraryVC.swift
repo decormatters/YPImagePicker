@@ -156,47 +156,47 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
 
     @objc
     func multipleSelectionButtonTapped() {
-        doAfterPermissionCheck { [weak self] in
-            if let self = self {
-                if !self.multipleSelectionEnabled {
-                    self.selection.removeAll()
-                }
-                self.showMultipleSelection()
-            }
-        }
+//        doAfterPermissionCheck { [weak self] in
+//            if let self = self {
+//                if !self.multipleSelectionEnabled {
+//                    self.selection.removeAll()
+//                }
+//                self.showMultipleSelection()
+//            }
+//        }
     }
     
     func showMultipleSelection() {
 
         // Prevent desactivating multiple selection when using `minNumberOfItems`
-        if YPConfig.library.minNumberOfItems > 1 && multipleSelectionEnabled {
-            return
-        }
-        
-        multipleSelectionEnabled = !multipleSelectionEnabled
-        
-        if multipleSelectionEnabled {
-            if selection.isEmpty && YPConfig.library.preSelectItemOnMultipleSelection,
-				delegate?.libraryViewShouldAddToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0),
-														  numSelections: selection.count) ?? true {
-                let asset = mediaManager.fetchResult[currentlySelectedIndex]
-                selection = [
-                    YPLibrarySelection(index: currentlySelectedIndex,
-                                       cropRect: v.currentCropRect(),
-                                       scrollViewContentOffset: v.assetZoomableView!.contentOffset,
-                                       scrollViewZoomScale: v.assetZoomableView!.zoomScale,
-                                       assetIdentifier: asset.localIdentifier)
-                ]
-            }
-        } else {
-            selection.removeAll()
-            addToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0))
-        }
-        
-        v.assetViewContainer.setMultipleSelectionMode(on: multipleSelectionEnabled)
-        v.collectionView.reloadData()
-        checkLimit()
-        delegate?.libraryViewDidToggleMultipleSelection(enabled: multipleSelectionEnabled)
+//        if YPConfig.library.minNumberOfItems > 1 && multipleSelectionEnabled {
+//            return
+//        }
+//
+//        multipleSelectionEnabled = !multipleSelectionEnabled
+//
+//        if multipleSelectionEnabled {
+//            if selection.isEmpty && YPConfig.library.preSelectItemOnMultipleSelection,
+//				delegate?.libraryViewShouldAddToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0),
+//														  numSelections: selection.count) ?? true {
+//                let asset = mediaManager.fetchResult[currentlySelectedIndex]
+//                selection = [
+//                    YPLibrarySelection(index: currentlySelectedIndex,
+//                                       cropRect: v.currentCropRect(),
+//                                       scrollViewContentOffset: v.assetZoomableView!.contentOffset,
+//                                       scrollViewZoomScale: v.assetZoomableView!.zoomScale,
+//                                       assetIdentifier: asset.localIdentifier)
+//                ]
+//            }
+//        } else {
+//            selection.removeAll()
+//            addToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0))
+//        }
+//
+//        v.assetViewContainer.setMultipleSelectionMode(on: multipleSelectionEnabled)
+//        v.collectionView.reloadData()
+//        checkLimit()
+//        delegate?.libraryViewDidToggleMultipleSelection(enabled: multipleSelectionEnabled)
     }
     
     // MARK: - Tap Preview
