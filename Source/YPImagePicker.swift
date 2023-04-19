@@ -172,7 +172,7 @@ override open func viewDidLoad() {
         loadingView.alpha = 0
     }
     
-    public func updateTopSpace(_ spacing: CGFloat) {
+    open func updateTopSpace(_ spacing: CGFloat) {
         
     }
 }
