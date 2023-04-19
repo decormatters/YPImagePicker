@@ -41,8 +41,6 @@ open class YPImagePicker: UINavigationController {
         _didFinishPicking?(items, false)
     }
     
-    public var updateTopSpace: ((CGFloat) -> Void)?
-    
     let loadingView = YPLoadingView()
     private let picker: YPPickerVC!
     
@@ -72,7 +70,7 @@ override open func viewDidLoad() {
         }
     
         picker.updateTopSpace = { [weak self] spacing in
-            self?.updateTopSpace?(spacing)
+            self?.updateTopSpace(spacing)
         }
     
         viewControllers = [picker]
@@ -172,6 +170,10 @@ override open func viewDidLoad() {
         )
         loadingView.fillContainer()
         loadingView.alpha = 0
+    }
+    
+    public func updateTopSpace(_ spacing: CGFloat) {
+        
     }
 }
 
