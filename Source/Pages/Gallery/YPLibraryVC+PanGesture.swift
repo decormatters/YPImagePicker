@@ -8,6 +8,10 @@
 
 import UIKit
 
+public protocol YPPanGestureDelegate: AnyObject {
+    func topSpaceDidChange(_ spacing: CGFloat)
+}
+
 public class PanGestureHelper: NSObject, UIGestureRecognizerDelegate {
     
     var v: YPLibraryView!
@@ -19,12 +23,15 @@ public class PanGestureHelper: NSObject, UIGestureRecognizerDelegate {
     private let dragDiff: CGFloat = 0
     private var _isImageShown = true
     
+    var delegate: YPPanGestureDelegate?
+    
     // The height constraint of the view with main selected image
     var topHeight: CGFloat {
         get { return v.assetViewContainerConstraintTop.constant }
         set {
             if newValue >= v.assetZoomableViewMinimalVisibleHeight - v.assetViewContainer.frame.height {
                 v.assetViewContainerConstraintTop.constant = newValue
+                delegate?.topSpaceDidChange(newValue)
             }
         }
     }

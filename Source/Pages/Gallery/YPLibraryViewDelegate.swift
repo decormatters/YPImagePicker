@@ -16,4 +16,5 @@ public protocol YPLibraryViewDelegate: class {
     func libraryViewDidToggleMultipleSelection(enabled: Bool)
     func noPhotosForOptions()
     func libraryViewShouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool
+    func topImageSpaceChanged(_ spacing: CGFloat)
 }

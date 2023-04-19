@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-public class YPLibraryVC: UIViewController, YPPermissionCheckable {
+public class YPLibraryVC: UIViewController, YPPermissionCheckable, YPPanGestureDelegate {
     
     internal weak var delegate: YPLibraryViewDelegate?
     internal var v: YPLibraryView!
@@ -53,7 +53,10 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
 
         setupCollectionView()
         registerForLibraryChanges()
+        
         panGestureHelper.registerForPanGesture(on: v)
+        panGestureHelper.delegate = self
+        
         registerForTapOnPreview()
         refreshMediaRequest()
 
@@ -141,6 +144,11 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         pausePlayer()
         NotificationCenter.default.removeObserver(self)
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
+    }
+    
+    // MARK: - Pan gesture
+    public func topSpaceDidChange(_ spacing: CGFloat) {
+        delegate?.topImageSpaceChanged(spacing)
     }
     
     // MARK: - Crop control

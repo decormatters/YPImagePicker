@@ -32,13 +32,15 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     public var didSelectItems: (([YPMediaItem]) -> Void)?
     public var DMlog: ((String, [String: Any]?) -> Void)?
     
+    public var updateTopSpace: ((CGFloat) -> Void)?
+    
     enum Mode {
         case library
         case camera
         case video
     }
     
-    private var libraryVC: YPLibraryVC?
+    var libraryVC: YPLibraryVC?
     private var cameraVC: YPCameraVC?
     private var videoVC: YPVideoCaptureVC?
     
@@ -354,6 +356,9 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
 }
 
 extension YPPickerVC: YPLibraryViewDelegate {
+    public func topImageSpaceChanged(_ spacing: CGFloat) {
+        updateTopSpace?(spacing)
+    }
     
     public func libraryViewDidTapNext() {
         libraryVC?.isProcessing = true
